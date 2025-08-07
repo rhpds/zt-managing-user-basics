@@ -4,18 +4,22 @@ antora:
   name: modules
   dir: www
   modules:
-    - name: module-01
-      label: "Writing your lab"
-      solveButton: true
-    - name: module-02
-      label: "Antora"
-      solveButton: true
-    - name: module-03
-      label: "Tabs"
+    - name: "01-whats-a-user-account"
+      label: "Creating user accounts with useradd"
+      solveButton: false
+    - name: "02-setting-account-password"
+      label: "Setting the Account Password"
+      solveButton: false
+    - name: "03-adding-groups"
+      label: "Adding Groups"
+      solveButton: false
+    - name: "04-removing-groups"
+      label: "Removing a user for a group"
+      solveButton: false
+    - name: "05-removing-users"
+      label: "Removing Users"
+      solveButton: false
 
 tabs:
-  - name: ">_ terminal"
-    url: /wetty
-  - name: "Asciidoc Doc"
-    url: https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
-    external: true
+  - name: "host1"
+    url: /wetty_host1/ssh/root

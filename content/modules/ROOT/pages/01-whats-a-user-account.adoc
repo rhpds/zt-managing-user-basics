@@ -1,0 +1,29 @@
+= Creating user accounts with useradd
+
+Add a new account called *guest* using the `+useradd+` command:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+useradd guest
+----
+
+This command has no expected output.
+
+Confirm the account creation by examining the *passwd* file.
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+grep -w guest /etc/passwd
+----
+
+.Output
+[source,bash]
+----
+guest:x:1889:1889::/home/guest:/bin/bash
+----
+
+NOTE: The UserID and GroupID *"1889"* will vary between systems
+
+Next, a password needs to be added to the user account to enable login.

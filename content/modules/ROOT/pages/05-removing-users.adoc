@@ -1,0 +1,87 @@
+= Removing Users
+
+The `+usermod+` command has a lock password option (`+-L+`) which
+informs the system to stop accepting a user’s login attempts.
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+usermod -L guest
+----
+
+This command has no expected output.
+
+We can confirm the change by calling `+passwd+` with the
+summary option (`+-S+`).
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+passwd -S guest
+----
+
+.Output
+[source,bash]
+----
+guest LK 2025-03-07 0 99999 7 -1 (Password locked.)
+----
+
+After expiring this account, *root* will still be able to log in.
+However, no other user will be able to access *guest*.
+
+NOTE: If you prefer, the `+chage+` command can accomplish this same functionality.
+Run `+chage+` with no arguments to see a summary of the account access
+features this command provides.
+
+== Deleting a user account
+
+Sometimes you may want to do more than just disable the account.
+Deleting a user is very similar to deleting a group. Running
+`+userdel guest+` removes the *guest* account from the system. It is
+often the case that you would also want to delete this user’s home
+directory. This avoids a new user account inheriting *guest*’s files
+when the new account inherits the user ID that used to belong to
+*guest*. If you do wish to delete the home directory along with the
+account, first back up *guest*’s files. Then, add the `+-r+` option to
+specify that you wish to delete the user’s home directory along with the
+user account.
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+userdel -r guest
+----
+
+This command has no expected output.
+
+Try logging in as *guest* to confirm the account deletion:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+su - guest
+----
+
+.Output
+[source,bash]
+----
+su: user guest does not exist or the user entry does not contain all the required fields
+----
+
+Also confirm that the *guest* home directory has been deleted:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+ls /home/guest
+----
+
+.Output
+[source,bash]
+----
+ls: cannot access '/home/guest': No such file or directory
+----
+
+NOTE: If you attempt to delete a user that still has active processes, you
+will get an error. You must kill this user’s processes
+and try again.

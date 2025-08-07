@@ -1,0 +1,81 @@
+= Adding Groups
+
+Create a group called *viewers* using the `+groupadd+` command. You will
+use the `+-g+` option to specify a group ID (GID), in this case 10000:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+groupadd -g 10000 viewers
+----
+
+This command has no expected output.
+
+NOTE: Every time a new user is created, there is a primary group that
+is automatically generated for the user. When creating your own group,
+it is best practice to specify a GID that leaves room for primary groups
+to be be generated with the same ID as the user account. New user IDs
+are typically generated ascending from 1000. Selecting a GID of 10000 in
+this example ensures that new user accounts will have ample space to
+generate their own primary group IDs that are equivalent to their user
+ID.
+
+Search for the group name in the `+/etc/group+` file to confirm this was
+successful:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+grep -w viewers /etc/group
+----
+
+.Output
+[source,bash]
+----
+viewers:x:10000:
+----
+
+This file shows the group name, the GID, and which users belong to the
+group. In this case, *viewers* does not yet have any users associated
+with it, but you can see the custom GID of 10000 was successfully set.
+Now you will see how to add users to this group.
+
+== Adding users to a group
+
+Now that you have created this group, add the *guest* user from the
+previous step to the *viewers* group using `+usermod+`. You will use the
+secondary group option (`+-G+`) in conjunction with the append option
+(`+-a+`) to add *viewers* without overwriting any existing groups
+associated with *guest*.
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+usermod -aG viewers guest
+----
+
+This command has no expected output.
+
+The `+groups+` command is useful for validating this change, because it
+lists all groups associated with a user:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+groups guest
+----
+
+.Output
+[source,bash]
+----
+guest : guest viewers
+----
+
+The *viewers* group has been added alongside the account’s primary group
+(*guest*).
+
+NOTE: Using the secondary group option (`+-G+`) adds *viewers* as a
+_secondary group_ for the *guest* user. Users can have any number of
+secondary groups. If you instead wanted to replace the primary group for
+*guest*, use `+-g+` when calling `+groupadd+`. You cannot use `+-a+` to
+append a primary group, as users can only have one primary group.

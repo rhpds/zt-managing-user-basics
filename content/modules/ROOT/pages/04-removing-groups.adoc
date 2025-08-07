@@ -1,0 +1,49 @@
+= Removing a user from a group
+
+If you want to remove a user from a group without deleting the group,
+run the following command:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+gpasswd -d guest viewers
+----
+
+.Output
+[source,bash]
+----
+Removing user guest from group viewers
+----
+
+NOTE: This change will not take effect until the user logs in again.
+
+== Deleting a group
+
+If instead you want to delete the group all together, run the
+`+groupdel+` command as root.
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+groupdel viewers
+----
+
+This command has no expected output.
+
+If you are trying to remove the primary group of a user, you must remove
+that user first.
+
+Attempting to add a user to this group will print an error message
+showing that it now does not exist.
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+usermod -aG viewers guest
+----
+
+.Output
+[source,bash]
+----
+usermod: group 'viewers' does not exist
+----
